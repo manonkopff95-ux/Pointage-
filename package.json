@@ -1,0 +1,9 @@
+{
+  "name": "pointage",
+  "private": true,
+  "type": "module",
+  "description": "Pointage du temps de travail et suivi des cigarettes (PWA).",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
