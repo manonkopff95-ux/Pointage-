@@ -28,6 +28,6 @@ Mise en ligne et installation sur iPhone : voir [GUIDE-GITHUB.md](GUIDE-GITHUB.m
   de la période en cours ne comptent pas.
 - Samedi et dimanche : comptés à part en heures supplémentaires.
 - Temps travaillé pendant un jour off : exclu des moyennes, signalé à part.
-- Pauses jamais comptées comme travail.
+- Pause = temps vide : le bouton Pause arrête l'activité en cours, rien n'est enregistré ni compté.
 - Un créneau qui franchit minuit est réparti sur les deux jours.
 - Moyenne par semaine = moyenne par jour ouvré × 5.

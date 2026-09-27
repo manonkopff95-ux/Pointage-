@@ -36,7 +36,7 @@ test("Markdown : détail jour par jour au format demandé", () => {
   const md = buildMarkdown(base());
   assert.match(md, /### Lundi 21 septembre 2026 — Travaillée/);
   assert.ok(md.includes("- 09:00–10:45 · Bureau · 1 h 45 · Dossier Martin; relecture"));
-  assert.ok(md.includes("- 10:45–11:00 · Pause · 15 min"));
+  assert.ok(!md.includes("Pause"), "les pauses (temps vide) n'apparaissent pas");
   assert.match(md, /### Mercredi 23 septembre 2026 — RTT\n\n- Aucun pointage/);
   assert.ok(md.includes("- 23:00–00:00 · Voiture · 1 h (se poursuit le lendemain)"));
   assert.ok(md.includes("- 00:00–01:00 · Voiture · 1 h (suite de la veille)"));
@@ -50,13 +50,12 @@ test("CSV : BOM UTF-8, point-virgule, une ligne par créneau", () => {
   const lines = csv.slice(1).trimEnd().split("\r\n");
   assert.equal(lines[0], "Date;Jour;Type de journée;Catégorie;Début;Fin;Durée (min);Durée (h);Note");
   assert.equal(lines[1], '21/09/2026;lundi;Travaillée;Bureau;09:00;10:45;105;1,75;"Dossier Martin; relecture"');
-  assert.equal(lines[2], "21/09/2026;lundi;Travaillée;Pause;10:45;11:00;15;0,25;");
-  assert.equal(lines[3], '21/09/2026;lundi;Travaillée;Rendez-vous;11:00;12:30;90;1,50;"Client ""A"""');
-  assert.equal(lines[4], "23/09/2026;mercredi;RTT;;;;0;0,00;");
-  assert.equal(lines[5], "24/09/2026;jeudi;Travaillée;Voiture;23:00;00:00;60;1,00;(se poursuit le lendemain)");
-  assert.equal(lines[6], "25/09/2026;vendredi;Travaillée;Voiture;00:00;01:00;60;1,00;(suite de la veille)");
-  assert.equal(lines[7], "26/09/2026;samedi;Week-end;Bureau;10:00;11:00;60;1,00;");
-  assert.equal(lines.length, 8);
+  assert.equal(lines[2], '21/09/2026;lundi;Travaillée;Rendez-vous;11:00;12:30;90;1,50;"Client ""A"""');
+  assert.equal(lines[3], "23/09/2026;mercredi;RTT;;;;0;0,00;");
+  assert.equal(lines[4], "24/09/2026;jeudi;Travaillée;Voiture;23:00;00:00;60;1,00;(se poursuit le lendemain)");
+  assert.equal(lines[5], "25/09/2026;vendredi;Travaillée;Voiture;00:00;01:00;60;1,00;(suite de la veille)");
+  assert.equal(lines[6], "26/09/2026;samedi;Week-end;Bureau;10:00;11:00;60;1,00;");
+  assert.equal(lines.length, 7);
 });
 
 test("CSV : échappement des champs", () => {

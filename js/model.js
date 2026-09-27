@@ -4,12 +4,14 @@ export const CATEGORIES = {
   bureau: { label: "Bureau", color: "#4B2A6B", text: "#FFFFFF", work: true },
   rdv: { label: "Rendez-vous", color: "#A8327C", text: "#FFFFFF", work: true },
   voiture: { label: "Voiture", color: "#C9B6F2", text: "#2A1B3D", work: true },
-  formation: { label: "Lire / se former", color: "#2E6F73", text: "#FFFFFF", work: true },
+  formation: { label: "Lire / se former", color: "#1F5FA0", text: "#FFFFFF", work: true },
+  // Ancienne catégorie : la pause n'est plus enregistrée (temps vide). Conservée
+  // uniquement pour relire d'anciennes données, qui sont ignorées dans les calculs.
   pause: { label: "Pause", color: "#E4DAF5", text: "#2A1B3D", work: false },
 };
 
 export const WORK_CATEGORIES = ["bureau", "rdv", "voiture", "formation"];
-export const ALL_CATEGORIES = [...WORK_CATEGORIES, "pause"];
+export const ALL_CATEGORIES = WORK_CATEGORIES;
 
 export const DAY_TYPES = {
   travaillee: "Travaillée",

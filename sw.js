@@ -4,7 +4,7 @@
 // en cache après le premier chargement.
 // Après une modification de l'application, augmentez le numéro de version ci-dessous.
 
-const VERSION = "pointage-v1";
+const VERSION = "pointage-v2";
 const FONTS = "pointage-fonts";
 const FILES = [
   "./",

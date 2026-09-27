@@ -37,7 +37,6 @@ export function buildMarkdown({ slots, days, cigs, start, end, today, now }) {
   L.push(`- Heures supplémentaires (week-end) : ${formatDuration(r.weekendMs)}`);
   if (r.offDayWorkMs > 0) L.push(`- Temps travaillé pendant des jours off (hors moyennes) : ${formatDuration(r.offDayWorkMs)}`);
   L.push(`- Jours off : ${r.offDays} (CP : ${r.offByType.cp}, RTT : ${r.offByType.rtt}, Autre : ${r.offByType.autre})`);
-  L.push(`- Pauses (non comptées comme travail) : ${formatDuration(r.pauseMs)}`);
   L.push(`- Cigarettes : ${nCigs} au total, soit ${formatNumber(nDays ? nCigs / nDays : 0)} par jour en moyenne`);
   L.push("");
   L.push("## Par catégorie (jours ouvrés hors jours off)", "");

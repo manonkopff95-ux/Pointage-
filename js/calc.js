@@ -6,6 +6,8 @@ import { dateKey, dayStart, addDays, eachDay, isWeekday, weekRange, monthRange, 
 import { WORK_CATEGORIES, ALL_CATEGORIES, OFF_TYPES, dayTypeOf } from "./model.js";
 
 const alive = (r) => r && !r.deleted;
+// La pause est du temps vide : elle n'est jamais enregistrée ni comptée.
+const countedSlot = (s) => alive(s) && s.category !== "pause";
 
 /** Fin effective d'un créneau : sa fin enregistrée, ou « maintenant » s'il est en cours. */
 export const slotEnd = (slot, now) => (slot.end ?? Math.max(now, slot.start));
@@ -36,7 +38,7 @@ const emptyTotals = () => Object.fromEntries(ALL_CATEGORIES.map((c) => [c, 0]));
 export function dayTotalsIndex(slots, now) {
   const idx = new Map();
   for (const slot of slots) {
-    if (!alive(slot)) continue;
+    if (!countedSlot(slot)) continue;
     for (const seg of segmentsByDay(slot, now)) {
       if (!idx.has(seg.key)) idx.set(seg.key, emptyTotals());
       const t = idx.get(seg.key);
@@ -57,7 +59,7 @@ export function dayTotals(slots, key, now) {
 export function daySegments(slots, key, now) {
   const out = [];
   for (const slot of slots) {
-    if (!alive(slot)) continue;
+    if (!countedSlot(slot)) continue;
     const segs = segmentsByDay(slot, now);
     segs.forEach((seg, i) => {
       if (seg.key !== key) return;
@@ -78,7 +80,7 @@ export function daySegments(slots, key, now) {
  * - moyennes calculées sur les jours ouvrés (lun.–ven.) moins les jours off ;
  * - un jour ouvré sans pointage compte pour zéro ;
  * - samedi et dimanche : comptés à part (heures sup du week-end) ;
- * - les pauses ne sont jamais du temps travaillé ;
+ * - les pauses sont du temps vide : jamais enregistrées ni comptées ;
  * - la période est arrêtée à « today » : les jours à venir ne comptent pas.
  */
 export function computeReport({ slots, days, start, end, today, now }) {
@@ -86,7 +88,7 @@ export function computeReport({ slots, days, start, end, today, now }) {
   const idx = dayTotalsIndex(slots, now);
   const byCat = Object.fromEntries(WORK_CATEGORIES.map((c) => [c, 0]));
   const offByType = { cp: 0, rtt: 0, autre: 0 };
-  let weekdays = 0, offDays = 0, baseDays = 0, baseWorkMs = 0, weekendMs = 0, offDayWorkMs = 0, pauseMs = 0;
+  let weekdays = 0, offDays = 0, baseDays = 0, baseWorkMs = 0, weekendMs = 0, offDayWorkMs = 0;
 
   const keys = effEnd >= start ? eachDay(start, effEnd) : [];
   for (const key of keys) {
@@ -102,7 +104,6 @@ export function computeReport({ slots, days, start, end, today, now }) {
       } else {
         baseDays++;
         baseWorkMs += work;
-        pauseMs += totals.pause;
         for (const c of WORK_CATEGORIES) byCat[c] += totals[c];
       }
     } else {
@@ -137,7 +138,6 @@ export function computeReport({ slots, days, start, end, today, now }) {
     avgPerWeekMs: avgPerDayMs * 5,
     weekendMs,
     offDayWorkMs,
-    pauseMs,
     categories,
   };
 }

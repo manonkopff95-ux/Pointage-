@@ -44,7 +44,7 @@ test("week-end : compté à part en heures sup, jamais dans les moyennes", () =>
   assert.equal(r.categories.voiture.totalMs, 0);
 });
 
-test("les pauses ne comptent jamais comme temps travaillé", () => {
+test("les pauses sont du temps vide : ni comptées ni listées", () => {
   const slots = [
     slot("bureau", "2026-09-21", "09:00", "12:00"),
     slot("pause", "2026-09-21", "12:00", "13:30"),
@@ -52,7 +52,9 @@ test("les pauses ne comptent jamais comme temps travaillé", () => {
   ];
   const r = computeReport({ slots, days: new Map(), start: "2026-09-21", end: "2026-09-21", today: "2026-09-30", now: 0 });
   assert.equal(r.baseWorkMs, 4 * H);
-  assert.equal(r.pauseMs, 1.5 * H);
+  assert.equal(r.pauseMs, undefined);
+  assert.equal(dayTotals(slots, "2026-09-21", 0).pause ?? 0, 0);
+  assert.deepEqual(daySegments(slots, "2026-09-21", 0).map((s) => s.slot.category), ["bureau", "formation"]);
   assert.equal(Math.round(r.categories.bureau.pct), 75);
   assert.equal(Math.round(r.categories.formation.pct), 25);
 });
