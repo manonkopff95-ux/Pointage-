@@ -41,7 +41,7 @@ export function render(root) {
         ${since ? `<span class="current-since">depuis ${formatHM(since)}</span>` : ""}
       </div>
       <div class="current-clock num" data-live="elapsed">${since ? formatClock(now - since) : "–:––:––"}</div>
-      ${paused ? '<div class="current-note">Temps vide : il n\'est pas enregistré.</div>' : ""}
+      ${paused ? '<div class="current-note">Non comptabilisé</div>' : ""}
       <div class="current-worked">Travaillé depuis ce matin : <strong class="num" data-live="worked">–</strong></div>
     </section>
 

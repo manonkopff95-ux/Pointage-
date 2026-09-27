@@ -77,7 +77,7 @@ export function render(root, params) {
         }).join("")}
         </tbody>
       </table>
-      <p class="muted small">Jours ouvrés hors jours off. Les pauses sont du temps vide, jamais comptées.</p>
+      <p class="muted small">Jours ouvrés hors jours off. Les pauses ne sont pas comptabilisées.</p>
     </section>`}
 
     <section class="card">
